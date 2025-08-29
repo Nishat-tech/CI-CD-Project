@@ -1,0 +1,31 @@
+name: Deploy Frontend
+
+on: 
+    push:
+        branches:
+            - main
+            - frontend
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+            - name: Login to docker hub
+              run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+            - name: Build docker image
+              run: docker build -e tester28/cicd-project .
+            - name: Publish image to docker hub
+              run: docker push tester28/cicd-project:latest
+    deploy:
+        needs: build
+        runs-on: self-hosted
+        steps:
+          - name: pull image from docker hub
+            run: docker pull tester28/cicd-project:latest
+          - name: Run docker container
+            run: docker run -d -p 4000:4000 --name cicd-project-container -e  MONGO_PASSWORD='${{secrets.MONGO_PASSWORD}}' tester28/cicd-project:latest
+
+
+    
