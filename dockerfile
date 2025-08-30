@@ -10,7 +10,7 @@ ENV REACT_APP_SERVER_BASE_URL=$REACT_APP_SERVER_BASE_URL
 
 # Build App
 WORKDIR /app
-COPY ../package.json .
+COPY package.json .
 RUN npm install
 COPY . .
 RUN npm run build
