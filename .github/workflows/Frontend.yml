@@ -1,10 +1,10 @@
-name: Deploy Frontend
+name: Deploy Backend
 
 on: 
     push:
         branches:
             - main
-            - frontend
+            - backend
 jobs:
     build:
         runs-on: ubuntu-latest
