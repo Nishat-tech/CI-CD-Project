@@ -50,7 +50,25 @@ app.get('/getUsers', async(req, res) => {
     }
 });
 
-
+// ADD THIS MISSING ROUTE
+app.post(`/addUser`, async (req, res) => {
+    console.log("api hit")
+    if (!db) {
+        return res.status(503).send("Database not connected.");
+    }
+    try {
+        let collection = db.collection("users");
+        let newDocument = req.body;
+        // Add a timestamp to the new document
+        newDocument.date = new Date(); 
+        let result = await collection.insertOne(newDocument);
+        res.status(201).send(result);
+    } catch (e) {
+        console.error("Error adding user:", e);
+        res.status(500).send("Internal Server Error");
+    }
+});
+// END OF MISSING ROUTE
 
 // Start the server only after connecting to the database
 async function startServer() {
