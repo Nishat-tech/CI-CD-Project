@@ -25,7 +25,7 @@ jobs:
           - name: pull image from docker hub
             run: docker pull tester28/reactapp
           - name: Run docker container
-            run: docker run -d -p 4000:4000 --name reactapp-container-new tester28/reactapp:latest
+            run: docker run -d -p 4000:4000  tester28/reactapp:latest
 
 
     
