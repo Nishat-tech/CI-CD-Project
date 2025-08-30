@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 
 import db from "./mongoC.js";
 
@@ -18,6 +19,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
  
 // Parses the text as json
 app.use(bodyParser.json());
+
+app.use(cors());
 
 app.get('/', (req, res) => {
     res.send('Hello World, from express');
