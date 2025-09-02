@@ -1,5 +1,5 @@
 // Add this line at the very top of your file to load environment variables
-import 'dotenv/config'; 
+import '.env/config'; 
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
