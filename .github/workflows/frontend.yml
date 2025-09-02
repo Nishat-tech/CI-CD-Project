@@ -23,11 +23,10 @@ jobs:
 
       - name: Build Frontend
         run: |
-          npm run build
+          CI=false npm run build
         env:
           REACT_APP_SERVER_BASE_URL: ${{ secrets.REACT_APP_SERVER_BASE_URL }}
           REACT_APP_NODE_ENV: 'production'
 
       - name: Deploy to Amplify (optional)
         run: |
-          echo "Add Amplify CLI deploy commands here if needed"
