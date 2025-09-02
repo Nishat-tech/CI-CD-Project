@@ -1,31 +1,29 @@
 name: Deploy Backend
 
 on: 
-    push:
-        branches:
-            - main
-            - backend
+  push:
+    branches:
+      - main
+      - backend
+
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
-            - name: Set up Node.js
-              uses: actions/setup-node@v4
-            - name: Login to docker hub
-              run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
-            - name: Build docker image
-              run: docker build -t tester28/cicd-project .
-            - name: Publish image to docker hub
-              run: docker push tester28/cicd-project:latest
-    deploy:
-        needs: build
-        runs-on: self-hosted
-        steps:
-          - name: pull image from docker hub
-            run: docker pull tester28/cicd-project:latest
-          - name: Run docker container
-            run: docker run -d -p 4001:4001 --name cicd-project-container-new1 -e  MONGO_PASSWORD='${{secrets.MONGO_PASSWORD}}' tester28/cicd-project:latest
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18' # apni requirement ke hisab se
 
-    
+      - name: Install dependencies
+        run: npm install
+
+      - name: Start Backend
+        run: |
+          # Agar aapke backend me start script hai package.json me
+          npm run start
+        env:
+          MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
