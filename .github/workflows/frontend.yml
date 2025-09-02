@@ -1,31 +1,33 @@
 name: Deploy Frontend
 
 on: 
-    push:
-        branches:
-            - main
-            - frontend
+  push:
+    branches:
+      - main
+      - frontend
+
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
-            - name: Set up Node.js
-              uses: actions/setup-node@v4
-            - name: Login to docker hub
-              run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
-            - name: Build docker image
-              run: docker build -t tester28/reactapp --build-arg REACT_APP_NODE_ENV='production' --build-arg REACT_APP_SERVER_BASE_URL='${{ secrets.REACT_APP_SERVER_BASE_URL }}' .
-            - name: Publish image to docker hub
-              run: docker push tester28/reactapp:latest
-    deploy:
-        needs: build
-        runs-on: self-hosted
-        steps:
-          - name: pull image from docker hub
-            run: docker pull tester28/reactapp
-          - name: Run docker container
-            run: docker run -d -p 4001:4001 --name reactapp-container-new1 tester28/reactapp:latest
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
 
-    
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Frontend
+        run: |
+          npm run build
+        env:
+          REACT_APP_SERVER_BASE_URL: ${{ secrets.REACT_APP_SERVER_BASE_URL }}
+          REACT_APP_NODE_ENV: 'production'
+
+      - name: Deploy to Amplify (optional)
+        run: |
+          echo "Add Amplify CLI deploy commands here if needed"
