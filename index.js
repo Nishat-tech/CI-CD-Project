@@ -1,4 +1,3 @@
-// Add this line at the very top of your file to load environment variables
 import 'dotenv/config'; 
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -6,7 +5,6 @@ import cors from 'cors';
 import { MongoClient } from "mongodb";
 
 // MongoDB Connection Setup
-// Make sure MONGO_PASSWORD is set in your .env file
 const password = encodeURIComponent(process.env.MONGO_PASSWORD.trim());
 const uri = `mongodb+srv://Tester_db_user:${password}@qacluster.uthpjat.mongodb.net/Tester_db?retryWrites=true&w=majority`;
 
@@ -35,7 +33,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // API Routes
-app.get('/getUsers', async(req, res) => {
+app.get(`/getUsers`, async(req, res) => {
     // Check if the database connection is available before proceeding
     if (!db) {
         return res.status(503).send("Database not connected.");
@@ -50,7 +48,6 @@ app.get('/getUsers', async(req, res) => {
     }
 });
 
-// ADD THIS MISSING ROUTE
 app.post(`/addUser`, async (req, res) => {
     console.log("api hit")
     if (!db) {
@@ -68,7 +65,6 @@ app.post(`/addUser`, async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 });
-// END OF MISSING ROUTE
 
 // Start the server only after connecting to the database
 async function startServer() {
