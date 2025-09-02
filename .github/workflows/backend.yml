@@ -32,6 +32,4 @@ jobs:
       - name: Test Backend Endpoint
         run: curl http://localhost:4000/health || echo "Server might not be ready yet"
 
-      - name: Deploy Frontend
-        run: npm run build  
-        
+      
